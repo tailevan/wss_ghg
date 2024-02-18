@@ -4,32 +4,43 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
 
-app = DjangoDash('dashboard')   # replaces dash.Dash
+# app = DjangoDash('dashboard')  
+external_stylesheets = ['https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css']
 
-app.layout = html.Div([
-    dcc.RadioItems(
-        id='dropdown-color',
-        options=[{'label': x, 'value': x} for x in ['Gold', 'Green', 'Blue']],
-        value='Gold'
-    ),
-    html.Div(id='output-color'),
-    dcc.RadioItems(
-        id='dropdown-size',
-        options=[{'label': i, 'value': i} for i in ['L', 'M', 'S']],
-        value='L'
-    ),
-    html.Div(id='output-size')
+app = DjangoDash('dashboard', external_stylesheets=external_stylesheets)
 
-])
+def create_dashboard(years, refrigerants_df):
+    dropdown_year = dcc.Dropdown(
+        id='dropdown-year',
+        options=[{'label': year, 'value': year} for year in years],
+        value=years[0]
+    )
 
-@app.callback(
-    Output('output-color', 'children'),
-    [Input('dropdown-color', 'value')])
-def callback_color(dropdown_value):
-    return "The selected color is %s." % dropdown_value
+    app.layout = html.Div([
+        html.Div([
+            html.P('Select year:'),
+        ], className='col-1'),
 
-@app.callback(
-    Output('output-size', 'children'),
-    [Input('dropdown-size', 'value')])
-def callback_size(dropdown_value):
-    return "The selected size is %s." % dropdown_value
+        html.Div([
+            dropdown_year,
+        ], className='col-1'),
+
+        html.Div([
+            html.P('Total Emission:'),
+        ], className='col-1'),
+
+        html.Div([
+            html.P(id='total-emission'),    
+        ], className='col-1'),
+    ], className='row')
+
+    @app.callback(
+        Output('total-emission', 'children'),
+        [Input('dropdown-year', 'value')]
+    )
+    def calculate_total_emission(year):
+        # Calculate the total emission for the given year from the refrigerants_df
+        total_emission = refrigerants_df.groupby('inventory_year')['emission'].sum().loc[year]
+        return total_emission
+
+    return app

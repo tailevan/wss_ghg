@@ -3,9 +3,11 @@ from django.views.generic import UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .forms import Inventory_Year_Form, Refrigerant_Form, Electricity_Form, Commute_Form, Water_Form, Wastewater_Form, Material_Form, Disposal_Form, Travel_Form, Flight_Form, Accommodation_Form, Freighting_Form
-from .models import Refrigerant, Electricity, Commute, Water, Wastewater, Material, Disposal, Travel, Flight, Accommodation, Freighting
+from .models import Inventory_Year, Refrigerant, Electricity, Commute, Water, Wastewater, Material, Disposal, Travel, Flight, Accommodation, Freighting
 from .models import Refrigerant_EF, Electricity_EF, Material_EF, Disposal_EF, Travel_EF, Flight_EF, Freighting_EF
 from .utils import calculate_emission_refrigerant, calculate_emission_electricity, calculate_emission_commute, calculate_emission_water, calculate_emission_wastewater, calculate_emission_material, calculate_emission_disposal, calculate_emission_travel, calculate_emission_flight, calculate_emission_accommodation, calculate_emission_freighting
+from .dashboard import create_dashboard
+import pandas as pd
 ############################################################################### 
 # Scope 1 - Refrigerant 
 
@@ -340,4 +342,11 @@ class FreightingDeleteView(DeleteView):
 # Dashboard
     
 def dashboard(request):
+    years = Inventory_Year.objects.values_list('year', flat=True)
+    
+    refrigerants = Refrigerant.objects.all()
+    refrigerants_df = pd.DataFrame(list(refrigerants.values()))
+
+    create_dashboard(years, refrigerants_df)
+
     return render(request, 'ghg_inventory/dashboard.html')
