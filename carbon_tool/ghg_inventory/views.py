@@ -343,10 +343,15 @@ class FreightingDeleteView(DeleteView):
     
 def dashboard(request):
     years = Inventory_Year.objects.values_list('year', flat=True)
+
+    refrigerants = Refrigerant.objects.select_related('inventory_year').all()
+    refrigerants_values = list(refrigerants.values('inventory_year__year', 'type', 'quantity', 'capacity', 'emission'))
+    refrigerants_df= pd.DataFrame(refrigerants_values)
     
-    refrigerants = Refrigerant.objects.all()
-    refrigerants_df = pd.DataFrame(list(refrigerants.values()))
+    electricities = Electricity.objects.select_related('inventory_year').all()
+    electricities_values = list(electricities.values('inventory_year__year', 'consumption', 'emission'))
+    electricities_df= pd.DataFrame(electricities_values)
 
-    create_dashboard(years, refrigerants_df)
 
+    create_dashboard(years, refrigerants_df, electricities_df)
     return render(request, 'ghg_inventory/dashboard.html')
