@@ -1,0 +1,3 @@
+carbon_tool/db.sqlite3
+
+carbon_tool/ghg_inventory/migrations/*
