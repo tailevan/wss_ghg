@@ -1,0 +1,27 @@
+
+{% extends 'ghg_inventory/base.html' %}
+
+
+
+{% block content %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link " href="{%url 'scope1'%}">Scope 1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"   href="{%url 'scope2'%}">Scope 2</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{%url 'scope3'%}">Scope 3</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link active" href="{%url 'dashboard'%}">Dashboard</a>
+        </li>
+    </ul>
+
+    <br>
+<h4> This is dashboard </h4>
+
+{% endblock %}
+
