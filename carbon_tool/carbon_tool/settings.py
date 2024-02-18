@@ -27,10 +27,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Django-Plotly-Dash settings
+import os
+import ghg_inventory.dashboard
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dpd_static_support',
+    'dash_bootstrap_components',
+]
 # Application definition
 
 INSTALLED_APPS = [
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'ghg_inventory',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_plotly_dash.middleware.BaseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -1,6 +1,5 @@
-
 {% extends 'ghg_inventory/base.html' %}
-
+{% load plotly_dash %}
 
 
 {% block content %}
@@ -22,6 +21,8 @@
 
     <br>
 <h4> This is dashboard </h4>
+
+{% plotly_app name="dashboard"  %}
 
 {% endblock %}
 
