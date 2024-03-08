@@ -140,18 +140,49 @@ def create_dashboard(years, refrigerants_df, electricities_df, commutes_df, wate
     def update_treemap(selected_year):
         scope1_emission = refrigerants_df[refrigerants_df['inventory_year__year'] == selected_year]['emission'].sum()
         scope2_emission = electricities_df[electricities_df['inventory_year__year'] == selected_year]['emission'].sum()
-        scope3_emission = commutes_df[commutes_df['inventory_year__year'] == selected_year]['emission'].sum()
+        # scope3_emission = commutes_df[commutes_df['inventory_year__year'] == selected_year]['emission'].sum()
+
+        commute_emission = commutes_df[commutes_df['inventory_year__year'] == selected_year]['emission'].sum()
+        water_emission = waters_df[waters_df['inventory_year__year'] == selected_year]['emission'].sum()
+        wastewater_emission = wastewaters_df[wastewaters_df['inventory_year__year'] == selected_year]['emission'].sum()
+        material_emission = materials_df[materials_df['inventory_year__year'] == selected_year]['emission'].sum()
+        disposal_emission = disposals_df[disposals_df['inventory_year__year'] == selected_year]['emission'].sum()
+        travel_emission = travels_df[travels_df['inventory_year__year'] == selected_year]['emission'].sum()
+        flight_emission = flights_df[flights_df['inventory_year__year'] == selected_year]['emission'].sum()
+        accommodation_emission = accommodations_df[accommodations_df['inventory_year__year'] == selected_year]['emission'].sum()
+        freighting_emission = freightings_df[freightings_df['inventory_year__year'] == selected_year]['emission'].sum()
+
+        scope3_emission = commute_emission + water_emission + wastewater_emission + material_emission + disposal_emission + travel_emission + flight_emission + accommodation_emission + freighting_emission
+
+
+        # treemap_figure = go.Figure(
+        #     go.Treemap(
+        #         labels=['Scope 1', 'Scope 2', 'Scope 3'],
+        #         parents=['', '', ''],
+        #         values=[scope1_emission, scope2_emission, scope3_emission],
+        #         textinfo='label+value',
+        #         marker=dict(
+        #             colors=['#1f77b4', '#ff7f0e', '#2ca02c'],
+        #             line=dict(width=2)
+        #         )
+        #     )
+        # )
+
+        labels = ["Scope 1", "Scope 2", "Scope 3", "Commute", "Water", "Wastewater", "Material", "Disposal", "Travel", "Flight", "Accommodation", "Freighting"]
+        parents = ["", "", "", "Scope 3", "Scope 3", "Scope 3", "Scope 3", "Scope 3", "Scope 3", "Scope 3", "Scope 3", "Scope 3"]
+        values = [scope1_emission, scope2_emission, scope3_emission, commute_emission, water_emission, wastewater_emission, material_emission, disposal_emission, travel_emission, flight_emission, accommodation_emission, freighting_emission]
 
         treemap_figure = go.Figure(
             go.Treemap(
-                labels=['Scope 1', 'Scope 2', 'Scope 3'],
-                parents=['', '', ''],
-                values=[scope1_emission, scope2_emission, scope3_emission],
+                labels=labels,
+                parents=parents,
+                values=values,
                 textinfo='label+value',
                 marker=dict(
-                    colors=['#1f77b4', '#ff7f0e', '#2ca02c'],
+                    colors=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#1f77b4', '#ff7f0e'],
                     line=dict(width=2)
-                )
+                ),
+                branchvalues='total'
             )
         )
 

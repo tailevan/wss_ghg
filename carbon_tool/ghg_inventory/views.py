@@ -415,6 +415,20 @@ def dashboard(request):
         'inventory_year__year': total_emission.index,
         'emission': total_emission
     })
-    
+
+
+    commute_emission = commutes_df[commutes_df['inventory_year__year'] == 2023]['emission'].sum()
+    water_emission = waters_df[waters_df['inventory_year__year'] == 2023]['emission'].sum()
+    wastewater_emission = wastewaters_df[wastewaters_df['inventory_year__year'] == 2023]['emission'].sum()
+    material_emission = materials_df[materials_df['inventory_year__year'] == 2023]['emission'].sum()
+    disposal_emission = disposals_df[disposals_df['inventory_year__year'] == 2023]['emission'].sum()
+    travel_emission = travels_df[travels_df['inventory_year__year'] == 2023]['emission'].sum()
+    flight_emission = flights_df[flights_df['inventory_year__year'] == 2023]['emission'].sum()
+    accommodation_emission = accommodations_df[accommodations_df['inventory_year__year'] == 2023]['emission'].sum()
+    freighting_emission = freightings_df[freightings_df['inventory_year__year'] == 2023]['emission'].sum()
+    print(f"Commute:{commute_emission}")
+    print(f"Water:{water_emission}")
+    print(f"Wastewater:{wastewater_emission}")
+
     create_dashboard(years, refrigerants_df, electricities_df, commutes_df, waters_df, wastewaters_df, materials_df, disposals_df, travels_df, flights_df, accommodations_df, freightings_df, scope3_emission_df)
     return render(request, 'ghg_inventory/dashboard.html')
