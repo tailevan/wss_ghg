@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure--+votlu01w%4gs!9jc39@t3mkm%6w6e7+b%u$70iqapzsta*ph
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".awsapprunner.com"]
+ALLOWED_HOSTS = [".awsapprunner.com",
+                 "localhost",
+                 "127.0.0.1"]
 
 # Django-Plotly-Dash settings
 import os
